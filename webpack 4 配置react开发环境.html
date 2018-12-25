@@ -1,0 +1,247 @@
+<!DOCTYPE html><html><head><title>webpack 4 配置react开发环境</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h1 id="webpack-4-配置react开发环境">webpack 4 配置react开发环境</h1>
+
+
+
+<h2 id="title"> </h2>
+
+
+
+<h4 id="目标">目标</h4>
+
+<blockquote>
+  <p>搭建一个个珠峰课堂的宣传网页</p>
+  
+  <p>搭建一个react、react-router-dom、redux综合运用的网站</p>
+</blockquote>
+
+
+
+<h1 id="搭建开发环境">搭建开发环境</h1>
+
+
+
+<h2 id="后端依赖">后端依赖</h2>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> <span class="hljs-keyword">body</span>-parser express express-<span class="hljs-keyword">session</span> -S
+</div></code></pre>
+
+
+
+<h2 id="开发依赖">开发依赖</h2>
+
+
+
+<h4 id="1webpack相关依赖">1、webpack相关依赖</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> webpack webpack-cli webpack-dev-<span class="hljs-keyword">server</span> html-webpack-<span class="hljs-keyword">plugin</span> clean-webpack-<span class="hljs-keyword">plugin</span> <span class="hljs-comment">--save-dev</span>
+</div></code></pre>
+
+
+
+<h4 id="2资源编译器">2、资源编译器</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> <span class="hljs-keyword">less</span> <span class="hljs-keyword">less</span>-loader css-loader <span class="hljs-keyword">style</span>-loader <span class="hljs-keyword">file</span>-loader <span class="hljs-keyword">url</span>-loader <span class="hljs-keyword">xml</span>-loader csv-loader <span class="hljs-comment">--save-dev</span>
+</div></code></pre>
+
+<ul><li><p>安装完了以上的依赖，需要在webpack.config.js中进行配置</p></li>
+</ul>
+
+
+
+<h4 id="3babel转义器">3、Babel转义器</h4>
+
+<ul><li><p>安装完了的依赖，需要在webpack.config.js中进行配置Babel</p></li>
+<li><p>转换react、es6/es7代码需要什么？</p></li>
+</ul>
+
+
+
+<h5 id="方法一bable之前语法">方法一、bable之前语法</h5>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs mipsasm"><div class="hljs-line">npm <span class="hljs-keyword">install </span><span class="hljs-keyword">babel-core </span><span class="hljs-keyword">babel-loader </span><span class="hljs-keyword">babel-preset-env </span><span class="hljs-keyword">babel-preset-react </span>--save-dev
+</div></code></pre>
+
+<ul><li><p>babel-core：bable的核心包，想要使用babel-loader必须安装这个包</p></li>
+<li><p>babel-loader：bable加载器</p></li>
+<li><p>babel-preset-env：支持5</p></li>
+<li><p>babel-preset-react：支持react（jsx转换为js）</p></li>
+</ul>
+
+<p><code>.babelrc</code></p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs json"><div class="hljs-line">{ <span class="hljs-attr">"presets"</span>: [<span class="hljs-string">"env"</span>,<span class="hljs-string">"react"</span>]}
+</div></code></pre>
+
+<hr>
+
+<h5 id="方法二babel-7的语法">方法二、babel-7的语法</h5>
+
+<ul><li><p>这种方法已经实践过了</p></li>
+</ul>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs mipsasm"><div class="hljs-line">npm <span class="hljs-keyword">install </span><span class="hljs-keyword">babel-loader </span>@<span class="hljs-keyword">babel/core </span>@<span class="hljs-keyword">babel/preset-env </span>@<span class="hljs-keyword">babel/preset-react </span>--save-dev
+</div></code></pre>
+
+<p>根目录下创建`.babelrc文件</p>
+
+<ul><li><p>为了让 preset 生效，你需要像下面这样定义你的 .babelrc 文件：</p></li>
+</ul>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs json"><div class="hljs-line">{
+</div><div class="hljs-line">  <span class="hljs-attr">"presets"</span>: [<span class="hljs-string">"@babel/preset-env"</span>,<span class="hljs-string">"@babel/preset-react"</span>]
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p>使用第二种方法会报错</p>
+
+<p>必须安装以下依赖</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs css"><div class="hljs-line"><span class="hljs-selector-tag">npm</span> <span class="hljs-selector-tag">install</span> @<span class="hljs-keyword">babel</span>/<span class="hljs-keyword">plugin</span>-<span class="hljs-keyword">proposal</span>-<span class="hljs-keyword">class</span>-<span class="hljs-keyword">properties</span> --save
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs json"><div class="hljs-line">{
+</div><div class="hljs-line">  <span class="hljs-attr">"presets"</span>: [<span class="hljs-string">"@babel/preset-env"</span>,<span class="hljs-string">"@babel/preset-react"</span>],
+</div><div class="hljs-line">  <span class="hljs-attr">"plugins"</span>: [<span class="hljs-string">"@babel/plugin-proposal-class-properties"</span>]
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<h2 id="生产依赖">生产依赖</h2>
+
+
+
+<h4 id="1react开发环境依赖">1、react开发环境依赖</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> react react-dom react-redux redux react-router-dom redux-logger redux-thunk  redux-promise <span class="hljs-comment">--save</span>
+</div></code></pre>
+
+
+
+<h4 id="2所需要的小功能插件">2、所需要的小功能插件</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> whatwg-<span class="hljs-keyword">fetch</span> react-transition-<span class="hljs-keyword">group</span> react-swipe  swipe-js-iso  <span class="hljs-comment">--save</span>
+</div></code></pre>
+
+
+
+<h4 id="3这个插件可用可不用">3、这个插件可用可不用</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs sql"><div class="hljs-line">npm <span class="hljs-keyword">install</span> react-router-redux  history <span class="hljs-comment">--save</span>
+</div></code></pre>
+
+
+
+<h2 id="title-1">—————————————————————————</h2>
+
+
+
+<h2 id="packagejson">package.json</h2>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs stata"><div class="hljs-line">  <span class="hljs-string">"scripts"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"test"</span>: <span class="hljs-string">"echo \"</span><span class="hljs-keyword">Error</span>: <span class="hljs-keyword">no</span> <span class="hljs-keyword">test</span> specified\<span class="hljs-string">" &amp;&amp; exit 1"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"start"</span>: <span class="hljs-string">"webpack-dev-server  --open"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"watch"</span>: <span class="hljs-string">"webpack --watch"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"server"</span>:<span class="hljs-string">"node server/server.js"</span>
+</div><div class="hljs-line">  },
+</div><div class="hljs-line"><wbr>
+</div></code></pre>
+
+
+
+<h2 id="配置webpackconfigjs">配置webpack.config.js</h2>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs groovy"><div class="hljs-line">const path = require(<span class="hljs-string">'path'</span>);
+</div><div class="hljs-line">const HtmlWebpackPlugin = require(<span class="hljs-string">"html-webpack-plugin"</span>);
+</div><div class="hljs-line">const CleanWebpackPlugin = require(<span class="hljs-string">"clean-webpack-plugin"</span>);
+</div><div class="hljs-line">module.exports = {
+</div><div class="hljs-line"><span class="hljs-symbol">    entry:</span> <span class="hljs-string">'./src/index.js'</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">    output:</span> {
+</div><div class="hljs-line"><span class="hljs-symbol">        path:</span> path.resolve(__dirname, <span class="hljs-string">'dist'</span>),
+</div><div class="hljs-line"><span class="hljs-symbol">        filename:</span> <span class="hljs-string">'bundle.js'</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">    },
+</div><div class="hljs-line"><span class="hljs-symbol">    mode:</span> <span class="hljs-string">'development'</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">    module:</span> {
+</div><div class="hljs-line"><span class="hljs-symbol">        rules:</span> [
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">            {
+</div><div class="hljs-line"><span class="hljs-symbol">                test:</span> <span class="hljs-regexp">/\.js$/</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">                exclude:</span> <span class="hljs-regexp">/(node_modules|bower_components)/</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">                use:</span> {
+</div><div class="hljs-line"><span class="hljs-symbol">                    loader:</span> <span class="hljs-string">'babel-loader'</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">                    options:</span> {
+</div><div class="hljs-line">                        <span class="hljs-comment">//在这里配置，或者在根目录使用.babelrc文件</span>
+</div><div class="hljs-line">                        <span class="hljs-comment">//在这个项目中为了学习，就都用了</span>
+</div><div class="hljs-line"><span class="hljs-symbol">                        presets:</span> [<span class="hljs-string">"@babel/preset-env"</span>,<span class="hljs-string">"@babel/preset-react"</span>],
+</div><div class="hljs-line"><span class="hljs-symbol">                        plugins:</span> [<span class="hljs-string">"@babel/plugin-proposal-class-properties"</span>]
+</div><div class="hljs-line">                    }
+</div><div class="hljs-line">                }
+</div><div class="hljs-line">            },
+</div><div class="hljs-line">            {<span class="hljs-string">test:</span> <span class="hljs-regexp">/\.css$/</span>, <span class="hljs-string">use:</span> [<span class="hljs-string">'style-loader'</span>, <span class="hljs-string">'css-loader'</span>]},
+</div><div class="hljs-line">            {<span class="hljs-string">test:</span> <span class="hljs-regexp">/\.(png|svg|jpg|gif)$/</span>, <span class="hljs-string">use:</span> [<span class="hljs-string">'file-loader'</span>]},
+</div><div class="hljs-line">            {<span class="hljs-string">test:</span> <span class="hljs-regexp">/\.(woff|woff2|eot|ttf|otf)$/</span>, <span class="hljs-string">use:</span> [<span class="hljs-string">'file-loader'</span>]},
+</div><div class="hljs-line">            {<span class="hljs-string">test:</span> <span class="hljs-regexp">/\.(csv|tsv)$/</span>, <span class="hljs-string">use:</span> [<span class="hljs-string">'csv-loader'</span>]},
+</div><div class="hljs-line">            {<span class="hljs-string">test:</span> <span class="hljs-regexp">/\.xml$/</span>, <span class="hljs-string">use:</span> [<span class="hljs-string">'xml-loader'</span>]},
+</div><div class="hljs-line">            {
+</div><div class="hljs-line"><span class="hljs-symbol">                test:</span> <span class="hljs-regexp">/\.less$/</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">                use:</span> [
+</div><div class="hljs-line">                    {<span class="hljs-string">loader:</span> <span class="hljs-string">"style-loader"</span>},
+</div><div class="hljs-line">                    {<span class="hljs-string">loader:</span> <span class="hljs-string">"css-loader"</span>},
+</div><div class="hljs-line">                    {<span class="hljs-string">loader:</span> <span class="hljs-string">"less-loader"</span>}
+</div><div class="hljs-line">                ]
+</div><div class="hljs-line">            }
+</div><div class="hljs-line">        ],
+</div><div class="hljs-line">    },
+</div><div class="hljs-line"><span class="hljs-symbol">    devtool:</span> <span class="hljs-string">'inline-source-map'</span>,
+</div><div class="hljs-line"><span class="hljs-symbol">    devServer:</span> {
+</div><div class="hljs-line"><span class="hljs-symbol">        contentBase:</span> <span class="hljs-string">'./dist'</span>
+</div><div class="hljs-line">    },
+</div><div class="hljs-line"><span class="hljs-symbol"></span>
+</div><div class="hljs-line"><span class="hljs-symbol">    plugins:</span> [
+</div><div class="hljs-line">     <span class="hljs-comment">/*   new HtmlWebpackPlugin({</span>
+</div><div class="hljs-line"><span class="hljs-comment">            title: "王伟-webpack"</span>
+</div><div class="hljs-line"><span class="hljs-comment">        }),*/</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">     <span class="hljs-comment">//在react中上面的方式，不能挂在元素。报错</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+</div><div class="hljs-line"><span class="hljs-symbol">            template:</span> <span class="hljs-string">'index.html'</span>
+</div><div class="hljs-line">        }),
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> CleanWebpackPlugin([<span class="hljs-string">"dist"</span>])
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">}
+</div></code></pre></div></body></html>
